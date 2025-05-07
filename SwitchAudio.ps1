@@ -14,9 +14,12 @@ if (Test-Path $cachePath) {
 }
 
 $currentDevice = Get-AudioDevice -Playback
-
-if ($currentDevice.ID -eq $deviceMap["Headphones"].ID) {
-    Set-AudioDevice -ID $deviceMap["TV"].ID
-} else {
-    Set-AudioDevice -ID $deviceMap["Headphones"].ID
+try {
+    if ($currentDevice.ID -eq $deviceMap["Headphones"].ID) {
+        Set-AudioDevice -ID $deviceMap["TV"].ID
+    } else {
+        Set-AudioDevice -ID $deviceMap["Headphones"].ID
+    }
+} catch {
+    Remove-Item $cachePath -Force
 }
